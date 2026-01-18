@@ -531,65 +531,80 @@
             flex-shrink: 0;
         }
 
-        .confidence-note {
-            text-align: center;
-            margin-top: 24px;
-            padding: 16px;
-            background: var(--cream);
-            border-radius: 8px;
-            font-size: 0.85rem;
-            color: var(--warm-gray);
+        .submit-section {
+            margin-top: 40px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
         }
 
-        .confidence-note strong {
-            color: var(--charcoal);
-        }
-
-        .export-section {
-            margin-top: 40px;
-            padding-top: 32px;
-            border-top: 1px solid var(--border);
-        }
-
-        .export-section h3 {
+        .submit-section h3 {
             font-family: 'Cormorant Garamond', serif;
             font-size: 1.25rem;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
-        .export-data {
-            background: var(--charcoal);
-            color: #e0e0e0;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: left;
-            font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
-            font-size: 0.8rem;
-            line-height: 1.6;
-            overflow-x: auto;
-            white-space: pre-wrap;
+        .submit-section p {
+            color: var(--warm-gray);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
         }
 
-        .copy-btn {
-            margin-top: 16px;
-            background: var(--warm-white);
-            color: var(--charcoal);
-            border: 1px solid var(--border);
-            padding: 10px 24px;
-            font-family: 'Jost', sans-serif;
-            font-size: 0.9rem;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .copy-btn:hover {
-            background: var(--sage);
+        .submit-btn {
+            background: linear-gradient(135deg, var(--terracotta) 0%, var(--terracotta-soft) 100%);
             color: white;
-            border-color: var(--sage);
+            border: none;
+            padding: 16px 48px;
+            font-family: 'Jost', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(196, 120, 106, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .submit-btn.sending {
+            background: var(--warm-gray);
+        }
+
+        .submit-success {
+            display: none;
+            background: rgba(90, 138, 106, 0.1);
+            border: 1px solid rgba(90, 138, 106, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 20px;
+        }
+
+        .submit-success.show {
+            display: block;
+        }
+
+        .submit-success h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            color: #5a8a6a;
+            margin-bottom: 8px;
+        }
+
+        .submit-success p {
+            color: var(--warm-gray);
+            margin-bottom: 0;
         }
 
         footer {
@@ -704,11 +719,15 @@
             </div>
             <div class="results-insight" id="results-insight"></div>
             <div class="rankings-list" id="rankings-list"></div>
-            <div class="confidence-note" id="confidence-note"></div>
-            <div class="export-section">
-                <h3>Your Response Data</h3>
-                <div class="export-data" id="export-data"></div>
-                <button class="copy-btn" id="copy-btn">Copy to Clipboard</button>
+            
+            <div class="submit-section">
+                <h3>All done!</h3>
+                <p>Click the button below to send your results. That's it — nothing else to do!</p>
+                <button class="submit-btn" id="submit-btn">Send My Results</button>
+                <div class="submit-success" id="submit-success">
+                    <h4>✓ Results Sent!</h4>
+                    <p>Thank you! Your travel preferences have been sent. You can close this page now.</p>
+                </div>
             </div>
         </div>
 
@@ -716,6 +735,26 @@
             With love, from your family ✦
         </footer>
     </div>
+
+    <!-- Hidden form for FormSubmit -->
+    <form id="hidden-form" action="https://formsubmit.co/christopher.kohl@gmail.com" method="POST" style="display: none;">
+        <input type="hidden" name="_subject" id="form-subject" value="Travel Survey Results">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+        <input type="text" name="respondent" id="form-respondent">
+        <input type="text" name="adventure_appetite" id="form-appetite">
+        <input type="text" name="rank_1" id="form-rank-1">
+        <input type="text" name="rank_2" id="form-rank-2">
+        <input type="text" name="rank_3" id="form-rank-3">
+        <input type="text" name="rank_4" id="form-rank-4">
+        <input type="text" name="rank_5" id="form-rank-5">
+        <input type="text" name="rank_6" id="form-rank-6">
+        <input type="text" name="rank_7" id="form-rank-7">
+        <input type="text" name="rank_8" id="form-rank-8">
+        <input type="text" name="rank_9" id="form-rank-9">
+        <input type="text" name="rank_10" id="form-rank-10">
+        <textarea name="full_results" id="form-full-results"></textarea>
+    </form>
 
     <script>
         // Stretch levels: 1 = comfortable/familiar, 2 = moderate stretch, 3 = bucket-list adventure
@@ -829,24 +868,23 @@
 
         // ============================================
         // ADAPTIVE TOURNAMENT ALGORITHM
-        // Uses a modified Swiss-system with Elo-like scoring
         // ============================================
         
         let respondentName = '';
-        let scores = {};          // Elo-like scores
-        let comparisons = {};     // Track which pairs we've compared
-        let matchupHistory = [];  // All matchups shown
+        let scores = {};
+        let comparisons = {};
+        let matchupHistory = [];
         let currentMatchup = null;
         let questionCount = 0;
-        let phase = 'seeding';    // 'seeding', 'refinement', 'tiebreaker'
+        let phase = 'seeding';
+        let finalResults = null;
         
         const INITIAL_SCORE = 1500;
         const K_FACTOR = 32;
         const MIN_QUESTIONS = 20;
         const MAX_QUESTIONS = 30;
-        const CONFIDENCE_THRESHOLD = 50; // Minimum score gap to be "confident"
+        const CONFIDENCE_THRESHOLD = 50;
         
-        // Initialize
         function initScores() {
             travelOptions.forEach(opt => {
                 scores[opt.id] = INITIAL_SCORE;
@@ -856,22 +894,18 @@
             questionCount = 0;
         }
         
-        // Get comparison key
         function getCompKey(id1, id2) {
             return id1 < id2 ? `${id1}-${id2}` : `${id2}-${id1}`;
         }
         
-        // Check if two options have been compared
         function haveCompared(id1, id2) {
             return comparisons[getCompKey(id1, id2)] === true;
         }
         
-        // Mark as compared
         function markCompared(id1, id2) {
             comparisons[getCompKey(id1, id2)] = true;
         }
         
-        // Update scores using Elo-like formula
         function updateScores(winnerId, loserId) {
             const winnerScore = scores[winnerId];
             const loserScore = scores[loserId];
@@ -883,34 +917,24 @@
             scores[loserId] = loserScore + K_FACTOR * (0 - expectedLoser);
         }
         
-        // Get sorted rankings
         function getRankings() {
             return travelOptions
                 .map(opt => ({ ...opt, score: scores[opt.id] }))
                 .sort((a, b) => b.score - a.score);
         }
         
-        // Find the best next matchup
         function selectNextMatchup() {
             const rankings = getRankings();
             
-            // Phase 1: Seeding (first ~8 questions)
-            // Compare across stretch levels to quickly establish preferences
             if (questionCount < 8) {
                 phase = 'seeding';
-                // Pair items from different stretch levels that haven't been compared
                 const stretchGroups = {
                     1: travelOptions.filter(o => o.stretch === 1),
                     2: travelOptions.filter(o => o.stretch === 2),
                     3: travelOptions.filter(o => o.stretch === 3)
                 };
                 
-                // Try to compare across stretch levels
-                const crossPairs = [
-                    [1, 3], // Comfortable vs Bucket List
-                    [1, 2], // Comfortable vs Moderate
-                    [2, 3], // Moderate vs Bucket List
-                ];
+                const crossPairs = [[1, 3], [1, 2], [2, 3]];
                 
                 for (const [s1, s2] of crossPairs) {
                     for (const opt1 of stretchGroups[s1]) {
@@ -923,8 +947,6 @@
                 }
             }
             
-            // Phase 2: Refinement (questions ~9-20)
-            // Compare adjacent items in current rankings
             if (questionCount < 20) {
                 phase = 'refinement';
                 for (let i = 0; i < rankings.length - 1; i++) {
@@ -935,7 +957,6 @@
                     }
                 }
                 
-                // Also compare items 2 apart if adjacent ones are done
                 for (let i = 0; i < rankings.length - 2; i++) {
                     const opt1 = rankings[i];
                     const opt2 = rankings[i + 2];
@@ -945,8 +966,6 @@
                 }
             }
             
-            // Phase 3: Tiebreaker (questions 21+)
-            // Focus on close scores that haven't been directly compared
             phase = 'tiebreaker';
             let bestPair = null;
             let smallestGap = Infinity;
@@ -968,12 +987,10 @@
             return bestPair;
         }
         
-        // Check if we have enough data
         function isComplete() {
             if (questionCount < MIN_QUESTIONS) return false;
             if (questionCount >= MAX_QUESTIONS) return true;
             
-            // Check if rankings are stable (decent gaps between adjacent items)
             const rankings = getRankings();
             let uncertainPairs = 0;
             
@@ -984,11 +1001,9 @@
                 }
             }
             
-            // Stop if we have few uncertain adjacent pairs
             return uncertainPairs <= 1;
         }
         
-        // Calculate confidence metrics
         function getConfidenceMetrics() {
             const rankings = getRankings();
             const totalPossible = (travelOptions.length * (travelOptions.length - 1)) / 2;
@@ -1029,9 +1044,8 @@
         const resultsName = document.getElementById('results-name');
         const resultsInsight = document.getElementById('results-insight');
         const rankingsList = document.getElementById('rankings-list');
-        const confidenceNote = document.getElementById('confidence-note');
-        const exportData = document.getElementById('export-data');
-        const copyBtn = document.getElementById('copy-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const submitSuccess = document.getElementById('submit-success');
 
         // Event Listeners
         nameInput.addEventListener('input', () => {
@@ -1041,7 +1055,7 @@
         startBtn.addEventListener('click', startSurvey);
         optionA.addEventListener('click', () => selectOption('a'));
         optionB.addEventListener('click', () => selectOption('b'));
-        copyBtn.addEventListener('click', copyResults);
+        submitBtn.addEventListener('click', submitResults);
 
         function startSurvey() {
             respondentName = nameInput.value.trim();
@@ -1071,13 +1085,11 @@
             const optAData = travelOptions.find(o => o.id === idA);
             const optBData = travelOptions.find(o => o.id === idB);
 
-            // Randomly swap sides to avoid position bias
             const swap = Math.random() > 0.5;
             const leftOpt = swap ? optBData : optAData;
             const rightOpt = swap ? optAData : optBData;
             currentMatchup = swap ? [idB, idA] : [idA, idB];
 
-            // Update card A (left)
             document.getElementById('region-a').textContent = leftOpt.region;
             document.getElementById('stretch-a').textContent = leftOpt.stretchLabel;
             document.getElementById('stretch-a').className = `card-stretch ${getStretchClass(leftOpt.stretch)}`;
@@ -1086,7 +1098,6 @@
             document.getElementById('logistics-a').innerHTML = leftOpt.logistics;
             document.getElementById('tags-a').innerHTML = leftOpt.tags.map(t => `<span class="card-tag">${t}</span>`).join('');
 
-            // Update card B (right)
             document.getElementById('region-b').textContent = rightOpt.region;
             document.getElementById('stretch-b').textContent = rightOpt.stretchLabel;
             document.getElementById('stretch-b').className = `card-stretch ${getStretchClass(rightOpt.stretch)}`;
@@ -1095,17 +1106,14 @@
             document.getElementById('logistics-b').innerHTML = rightOpt.logistics;
             document.getElementById('tags-b').innerHTML = rightOpt.tags.map(t => `<span class="card-tag">${t}</span>`).join('');
 
-            // Reset selection state
             optionA.classList.remove('selected');
             optionB.classList.remove('selected');
 
-            // Update progress
             questionCount++;
             currentMatchupEl.textContent = questionCount;
             const progress = Math.min((questionCount / MIN_QUESTIONS) * 100, 100);
             progressBar.style.width = `${progress}%`;
             
-            // Update phase indicator
             const phaseLabels = {
                 'seeding': 'Getting to know you',
                 'refinement': 'Narrowing it down',
@@ -1119,26 +1127,22 @@
             const winnerId = choice === 'a' ? idA : idB;
             const loserId = choice === 'a' ? idB : idA;
             
-            // Update scores
             updateScores(winnerId, loserId);
             markCompared(idA, idB);
             matchupHistory.push({ winner: winnerId, loser: loserId });
             
-            // Visual feedback
             if (choice === 'a') {
                 optionA.classList.add('selected');
             } else {
                 optionB.classList.add('selected');
             }
 
-            // Brief delay before next matchup
             setTimeout(() => {
                 showNextMatchup();
             }, 400);
         }
 
         function calculateAdventureAppetite(ranked) {
-            // Weight by position (top choices matter most)
             const weights = [10, 8, 6, 5, 4, 3, 2, 1.5, 1, 0.5];
             let weightedStretch = 0;
             let totalWeight = 0;
@@ -1174,44 +1178,11 @@
             resultsSection.classList.add('active');
 
             const ranked = getRankings();
-            resultsName.textContent = `${respondentName}'s travel preferences, ranked by appeal`;
-
-            // Calculate adventure appetite
             const appetite = calculateAdventureAppetite(ranked);
-            resultsInsight.innerHTML = `
-                <h3>Your Adventure Appetite: ${appetite.level}</h3>
-                <p>${appetite.description}</p>
-            `;
-
-            // Render rankings
-            rankingsList.innerHTML = ranked.map((opt, idx) => `
-                <div class="ranking-item">
-                    <div class="rank-badge">${idx + 1}</div>
-                    <div class="ranking-content">
-                        <div class="ranking-title">${opt.title}</div>
-                        <div class="ranking-meta">
-                            <span class="ranking-region">${opt.region}</span>
-                            <span class="ranking-stretch ${getStretchClass(opt.stretch)}">${opt.stretchLabel}</span>
-                        </div>
-                    </div>
-                    <div class="ranking-score">${Math.round(opt.score)} pts</div>
-                </div>
-            `).join('');
-
-            // Confidence note
             const metrics = getConfidenceMetrics();
-            let confidenceMessage = '';
-            if (metrics.tightRaces === 0) {
-                confidenceMessage = `<strong>High confidence:</strong> Your preferences came through clearly in ${questionCount} comparisons.`;
-            } else if (metrics.tightRaces <= 2) {
-                confidenceMessage = `<strong>Good confidence:</strong> Rankings are clear, though positions ${metrics.tightRaces > 1 ? 'in a few spots' : 'in one spot'} were close calls.`;
-            } else {
-                confidenceMessage = `<strong>Note:</strong> Some rankings were close. The top and bottom choices are reliable; middle rankings may shift.`;
-            }
-            confidenceNote.innerHTML = confidenceMessage;
-
-            // Export data
-            const exportObj = {
+            
+            // Store for submission
+            finalResults = {
                 respondent: respondentName,
                 timestamp: new Date().toISOString(),
                 questionsAnswered: questionCount,
@@ -1225,15 +1196,68 @@
                 })),
                 confidenceMetrics: metrics
             };
-            exportData.textContent = JSON.stringify(exportObj, null, 2);
+
+            resultsName.textContent = `${respondentName}'s travel preferences`;
+
+            resultsInsight.innerHTML = `
+                <h3>Your Adventure Appetite: ${appetite.level}</h3>
+                <p>${appetite.description}</p>
+            `;
+
+            rankingsList.innerHTML = ranked.map((opt, idx) => `
+                <div class="ranking-item">
+                    <div class="rank-badge">${idx + 1}</div>
+                    <div class="ranking-content">
+                        <div class="ranking-title">${opt.title}</div>
+                        <div class="ranking-meta">
+                            <span class="ranking-region">${opt.region}</span>
+                            <span class="ranking-stretch ${getStretchClass(opt.stretch)}">${opt.stretchLabel}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
         }
 
-        function copyResults() {
-            navigator.clipboard.writeText(exportData.textContent).then(() => {
-                copyBtn.textContent = 'Copied!';
-                setTimeout(() => {
-                    copyBtn.textContent = 'Copy to Clipboard';
-                }, 2000);
+        function submitResults() {
+            if (!finalResults) return;
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.classList.add('sending');
+            
+            // Populate hidden form
+            document.getElementById('form-subject').value = `Travel Survey: ${finalResults.respondent}'s Results`;
+            document.getElementById('form-respondent').value = finalResults.respondent;
+            document.getElementById('form-appetite').value = finalResults.adventureAppetite;
+            
+            finalResults.rankings.forEach((r, idx) => {
+                document.getElementById(`form-rank-${idx + 1}`).value = `#${r.rank}: ${r.destination} (${r.region})`;
+            });
+            
+            document.getElementById('form-full-results').value = JSON.stringify(finalResults, null, 2);
+            
+            // Submit via fetch to avoid page redirect
+            const form = document.getElementById('hidden-form');
+            const formData = new FormData(form);
+            
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    submitBtn.style.display = 'none';
+                    submitSuccess.classList.add('show');
+                } else {
+                    throw new Error('Submission failed');
+                }
+            })
+            .catch(error => {
+                // Fallback: submit the form directly (will redirect)
+                form.submit();
             });
         }
     </script>
