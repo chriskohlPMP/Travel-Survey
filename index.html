@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Dreams — Which Would You Choose?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #FAF7F2;
+            --warm-white: #FFFCF7;
+            --sage: #8B9B7E;
+            --sage-light: #A8B89A;
+            --terracotta: #C4786A;
+            --terracotta-soft: #D99B8E;
+            --charcoal: #3A3A3A;
+            --warm-gray: #6B6B6B;
+            --gold: #C9A962;
+            --border: rgba(139, 155, 126, 0.2);
+            --blue-soft: #7A9BB8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Jost', sans-serif;
+            background: var(--cream);
+            color: var(--charcoal);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 24px 60px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 32px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .decorative-line {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .decorative-line span {
+            width: 40px;
+            height: 1px;
+            background: var(--sage);
+        }
+
+        .decorative-line svg {
+            width: 24px;
+            height: 24px;
+            color: var(--sage);
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 500;
+            color: var(--charcoal);
+            letter-spacing: 0.02em;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--warm-gray);
+            font-weight: 300;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Progress Section */
+        .progress-section {
+            margin-bottom: 32px;
+        }
+
+        .progress-bar-container {
+            background: var(--warm-white);
+            border-radius: 20px;
+            height: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--sage) 0%, var(--sage-light) 100%);
+            border-radius: 20px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: var(--warm-gray);
+        }
+
+        .progress-text strong {
+            color: var(--charcoal);
+        }
+
+        /* Name Section */
+        .name-section {
+            background: var(--warm-white);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 32px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .name-section h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .name-section p {
+            color: var(--warm-gray);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            max-width: 440px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .name-input-wrapper {
+            max-width: 320px;
+            margin: 0 auto;
+        }
+
+        .name-section input {
+            width: 100%;
+            padding: 14px 20px;
+            font-family: 'Jost', sans-serif;
+            font-size: 1.1rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            background: var(--cream);
+            color: var(--charcoal);
+            text-align: center;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .name-section input:focus {
+            outline: none;
+            border-color: var(--sage);
+            box-shadow: 0 0 0 4px rgba(139, 155, 126, 0.15);
+        }
+
+        .start-btn {
+            margin-top: 24px;
+            background: linear-gradient(135deg, var(--sage) 0%, var(--sage-light) 100%);
+            color: white;
+            border: none;
+            padding: 14px 40px;
+            font-family: 'Jost', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .start-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(139, 155, 126, 0.3);
+        }
+
+        .start-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Matchup Section */
+        .matchup-section {
+            display: none;
+        }
+
+        .matchup-section.active {
+            display: block;
+        }
+
+        .matchup-question {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .matchup-question h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.75rem;
+            font-weight: 500;
+            color: var(--charcoal);
+        }
+
+        /* Color theme indicator */
+        .theme-bar {
+            height: 6px;
+            border-radius: 3px;
+            margin-bottom: 24px;
+            transition: background 0.3s;
+        }
+
+        .matchup-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: stretch;
+        }
+
+        .matchup-card {
+            background: var(--warm-white);
+            border: 3px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .matchup-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        .matchup-card.selected {
+            transform: scale(1.02);
+        }
+
+        /* Theme-specific card colors */
+        .theme-rose .matchup-card { border-color: #e8d4d4; background: #fef9f9; }
+        .theme-rose .matchup-card.selected { border-color: #c4786a; background: linear-gradient(180deg, rgba(196,120,106,0.15) 0%, #fef9f9 100%); }
+        
+        .theme-sage .matchup-card { border-color: #d4ddd4; background: #f9fdf9; }
+        .theme-sage .matchup-card.selected { border-color: #8b9b7e; background: linear-gradient(180deg, rgba(139,155,126,0.15) 0%, #f9fdf9 100%); }
+        
+        .theme-sky .matchup-card { border-color: #d4dce8; background: #f9fbfe; }
+        .theme-sky .matchup-card.selected { border-color: #7a9bb8; background: linear-gradient(180deg, rgba(122,155,184,0.15) 0%, #f9fbfe 100%); }
+        
+        .theme-gold .matchup-card { border-color: #e8e0d0; background: #fefcf7; }
+        .theme-gold .matchup-card.selected { border-color: #c9a962; background: linear-gradient(180deg, rgba(201,169,98,0.15) 0%, #fefcf7 100%); }
+        
+        .theme-plum .matchup-card { border-color: #ddd4dd; background: #fcf9fc; }
+        .theme-plum .matchup-card.selected { border-color: #9b7a9b; background: linear-gradient(180deg, rgba(155,122,155,0.15) 0%, #fcf9fc 100%); }
+
+        /* Theme bar colors */
+        .theme-rose .theme-bar { background: linear-gradient(90deg, #c4786a, #d99b8e); }
+        .theme-sage .theme-bar { background: linear-gradient(90deg, #8b9b7e, #a8b89a); }
+        .theme-sky .theme-bar { background: linear-gradient(90deg, #7a9bb8, #a3c4db); }
+        .theme-gold .theme-bar { background: linear-gradient(90deg, #c9a962, #dcc88a); }
+        .theme-plum .theme-bar { background: linear-gradient(90deg, #9b7a9b, #b8a3b8); }
+
+        .selection-indicator {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: var(--cream);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .theme-rose .matchup-card.selected .selection-indicator { background: #c4786a; border-color: #c4786a; }
+        .theme-sage .matchup-card.selected .selection-indicator { background: #8b9b7e; border-color: #8b9b7e; }
+        .theme-sky .matchup-card.selected .selection-indicator { background: #7a9bb8; border-color: #7a9bb8; }
+        .theme-gold .matchup-card.selected .selection-indicator { background: #c9a962; border-color: #c9a962; }
+        .theme-plum .matchup-card.selected .selection-indicator { background: #9b7a9b; border-color: #9b7a9b; }
+
+        .selection-indicator svg {
+            width: 18px;
+            height: 18px;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .matchup-card.selected .selection-indicator svg {
+            opacity: 1;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .card-region {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--sage);
+            background: rgba(139, 155, 126, 0.12);
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+
+        .card-stretch {
+            display: inline-flex;
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .stretch-1 { color: #5a8a6a; background: rgba(90, 138, 106, 0.12); }
+        .stretch-2 { color: var(--gold); background: rgba(201, 169, 98, 0.15); }
+        .stretch-3 { color: var(--terracotta); background: rgba(196, 120, 106, 0.12); }
+
+        .card-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--charcoal);
+            margin-bottom: 10px;
+            line-height: 1.3;
+            padding-right: 40px;
+        }
+
+        .card-description {
+            font-size: 0.85rem;
+            color: var(--warm-gray);
+            line-height: 1.55;
+            flex: 1;
+        }
+
+        .card-logistics {
+            font-size: 0.75rem;
+            color: var(--charcoal);
+            background: rgba(0,0,0,0.03);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 14px;
+            line-height: 1.5;
+        }
+
+        .card-logistics strong {
+            color: var(--sage);
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 12px;
+        }
+
+        .card-tag {
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(0,0,0,0.04);
+            color: var(--sage);
+            font-weight: 500;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 32px;
+            gap: 16px;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            font-family: 'Jost', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--warm-white);
+            color: var(--warm-gray);
+            border: 2px solid var(--border);
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            border-color: var(--sage);
+            color: var(--charcoal);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .nav-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .question-counter {
+            font-size: 0.9rem;
+            color: var(--warm-gray);
+            min-width: 80px;
+            text-align: center;
+        }
+
+        /* Results Section */
+        .results-section {
+            display: none;
+            text-align: center;
+        }
+
+        .results-section.active {
+            display: block;
+        }
+
+        .results-header {
+            margin-bottom: 40px;
+        }
+
+        .results-header h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .results-header p {
+            color: var(--warm-gray);
+        }
+
+        .sending-indicator {
+            background: var(--warm-white);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 24px;
+            margin-bottom: 32px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 0.95rem;
+            color: var(--warm-gray);
+        }
+
+        .sending-indicator.sent {
+            background: rgba(90, 138, 106, 0.1);
+            border-color: rgba(90, 138, 106, 0.3);
+            color: #5a8a6a;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-top-color: var(--sage);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .sending-indicator.sent .spinner {
+            display: none;
+        }
+
+        .checkmark {
+            display: none;
+            width: 20px;
+            height: 20px;
+            color: #5a8a6a;
+        }
+
+        .sending-indicator.sent .checkmark {
+            display: block;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .results-insight {
+            background: linear-gradient(135deg, var(--sage) 0%, var(--sage-light) 100%);
+            color: white;
+            padding: 20px 24px;
+            border-radius: 12px;
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+
+        .results-insight h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .results-insight p {
+            font-size: 0.95rem;
+            opacity: 0.95;
+            line-height: 1.5;
+        }
+
+        .rankings-list {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .ranking-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            background: var(--warm-white);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        .ranking-item:nth-child(1) {
+            border-color: var(--terracotta);
+            background: linear-gradient(90deg, rgba(196, 120, 106, 0.1) 0%, var(--warm-white) 100%);
+        }
+
+        .ranking-item:nth-child(2) {
+            border-color: var(--gold);
+            background: linear-gradient(90deg, rgba(201, 169, 98, 0.1) 0%, var(--warm-white) 100%);
+        }
+
+        .ranking-item:nth-child(3) {
+            border-color: var(--blue-soft);
+            background: linear-gradient(90deg, rgba(122, 155, 184, 0.1) 0%, var(--warm-white) 100%);
+        }
+
+        .rank-badge {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .ranking-item:nth-child(1) .rank-badge { background: var(--terracotta); }
+        .ranking-item:nth-child(2) .rank-badge { background: var(--gold); }
+        .ranking-item:nth-child(3) .rank-badge { background: var(--blue-soft); }
+        .ranking-item:nth-child(n+4) .rank-badge { background: var(--warm-gray); opacity: 0.6; }
+
+        .ranking-content { flex: 1; }
+
+        .ranking-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--charcoal);
+        }
+
+        .ranking-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 4px;
+        }
+
+        .ranking-region {
+            font-size: 0.8rem;
+            color: var(--warm-gray);
+        }
+
+        .ranking-stretch {
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            font-size: 0.85rem;
+            color: var(--warm-gray);
+        }
+
+        .hidden { display: none !important; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8rem; }
+            .matchup-cards { grid-template-columns: 1fr; gap: 16px; }
+            .matchup-card { padding: 20px; }
+            .card-title { font-size: 1.2rem; }
+            .nav-buttons { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="decorative-line">
+                <span></span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                </svg>
+                <span></span>
+            </div>
+            <h1>Travel Dreams</h1>
+            <p class="subtitle">A series of simple choices to discover your ideal adventure</p>
+        </header>
+
+        <div class="progress-section hidden" id="progress-section">
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <p class="progress-text">Question <strong id="current-q">1</strong> of <strong id="total-q">20</strong></p>
+        </div>
+
+        <div class="name-section" id="name-section">
+            <h2>Welcome!</h2>
+            <p>You'll see pairs of travel destinations. Simply tap the one that appeals to you more — go with your gut. There are no wrong answers!</p>
+            <div class="name-input-wrapper">
+                <input type="text" id="respondent-name" placeholder="Enter your name to begin">
+            </div>
+            <button class="start-btn" id="start-btn" disabled>Begin the Journey</button>
+        </div>
+
+        <div class="matchup-section" id="matchup-section">
+            <div class="matchup-question">
+                <h2>Which trip sounds more appealing?</h2>
+            </div>
+            
+            <div class="theme-bar" id="theme-bar"></div>
+
+            <div class="matchup-cards" id="matchup-cards">
+                <div class="matchup-card" id="option-a">
+                    <div class="selection-indicator">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="card-header">
+                        <span class="card-region" id="region-a"></span>
+                        <span class="card-stretch" id="stretch-a"></span>
+                    </div>
+                    <div class="card-title" id="title-a"></div>
+                    <div class="card-description" id="desc-a"></div>
+                    <div class="card-logistics" id="logistics-a"></div>
+                    <div class="card-tags" id="tags-a"></div>
+                </div>
+                <div class="matchup-card" id="option-b">
+                    <div class="selection-indicator">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="card-header">
+                        <span class="card-region" id="region-b"></span>
+                        <span class="card-stretch" id="stretch-b"></span>
+                    </div>
+                    <div class="card-title" id="title-b"></div>
+                    <div class="card-description" id="desc-b"></div>
+                    <div class="card-logistics" id="logistics-b"></div>
+                    <div class="card-tags" id="tags-b"></div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn" id="back-btn" disabled>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back
+                </button>
+                <span class="question-counter" id="question-counter">1 / 20</span>
+                <button class="nav-btn" id="forward-btn" disabled>
+                    Forward
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="results-section" id="results-section">
+            <div class="results-header">
+                <h2>Your Travel Rankings</h2>
+                <p id="results-name"></p>
+            </div>
+            
+            <div class="sending-indicator" id="sending-indicator">
+                <div class="spinner"></div>
+                <svg class="checkmark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span id="sending-text">Sending your results...</span>
+            </div>
+
+            <div class="results-insight" id="results-insight"></div>
+            <div class="rankings-list" id="rankings-list"></div>
+        </div>
+
+        <footer>
+            With love, from your family ✦
+        </footer>
+    </div>
+
+    <form id="hidden-form" action="https://formsubmit.co/christopher.kohl@gmail.com" method="POST" style="display:none;">
+        <input type="hidden" name="_subject" id="form-subject">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+        <input type="text" name="respondent" id="form-respondent">
+        <input type="text" name="adventure_appetite" id="form-appetite">
+        <input type="text" name="rank_1" id="form-rank-1">
+        <input type="text" name="rank_2" id="form-rank-2">
+        <input type="text" name="rank_3" id="form-rank-3">
+        <input type="text" name="rank_4" id="form-rank-4">
+        <input type="text" name="rank_5" id="form-rank-5">
+        <input type="text" name="rank_6" id="form-rank-6">
+        <input type="text" name="rank_7" id="form-rank-7">
+        <input type="text" name="rank_8" id="form-rank-8">
+        <input type="text" name="rank_9" id="form-rank-9">
+        <input type="text" name="rank_10" id="form-rank-10">
+        <textarea name="full_results" id="form-full-results"></textarea>
+    </form>
+
+    <script>
+        const travelOptions = [
+            { id: 1, title: "Branson & the Ozarks", region: "Missouri", stretch: 1, stretchLabel: "Easy & Familiar", description: "Live music shows, beautiful lake views, and good old-fashioned hospitality. Silver Dollar City, dinner cruises on Table Rock Lake, and the charm of a place that feels like home.", logistics: "<strong>Travel:</strong> Easy drive or short flight. <strong>Pace:</strong> Very relaxed. <strong>Comfort:</strong> Familiar food, no surprises.", tags: ["Music", "Lakes", "Relaxed"] },
+            { id: 2, title: "San Antonio & Hill Country", region: "Texas", stretch: 1, stretchLabel: "Easy & Familiar", description: "The beautiful River Walk, the Alamo, and rolling Texas Hill Country. Charming small towns, great BBQ, and wildflowers in spring.", logistics: "<strong>Travel:</strong> Direct flights available. <strong>Pace:</strong> Very relaxed. <strong>Comfort:</strong> Easy to navigate, friendly locals.", tags: ["History", "Food", "Scenic"] },
+            { id: 3, title: "Mackinac Island", region: "Michigan", stretch: 1, stretchLabel: "Easy & Familiar", description: "Step back in time on an island with no cars — just horses, bikes, and fudge shops. Grand Hotel's famous porch and stunning lake views.", logistics: "<strong>Travel:</strong> Drive or short flight + ferry. <strong>Pace:</strong> Wonderfully slow. <strong>Comfort:</strong> Classic American experience.", tags: ["Nostalgic", "Scenic", "Relaxed"] },
+            { id: 4, title: "Alaska: Glaciers & Wildlife", region: "Alaska", stretch: 2, stretchLabel: "Moderate Adventure", description: "Glaciers calving into the sea, whales breaching, and bears fishing for salmon. Travel by scenic railroad and intimate expedition ship.", logistics: "<strong>Travel:</strong> Flight to Anchorage, then guided. <strong>Pace:</strong> Comfortable but active. <strong>Comfort:</strong> Quality lodges.", tags: ["Wildlife", "Nature", "Once-in-a-Lifetime"] },
+            { id: 5, title: "Canadian Rockies by Train", region: "Canada", stretch: 2, stretchLabel: "Moderate Adventure", description: "The Rocky Mountaineer's glass-dome cars reveal Banff, Lake Louise, and Jasper — turquoise lakes, towering peaks, and wildlife.", logistics: "<strong>Travel:</strong> Flight to Calgary, train does the rest. <strong>Pace:</strong> Relaxed — you sit and watch. <strong>Comfort:</strong> Luxury train service.", tags: ["Train", "Mountains", "Scenic"] },
+            { id: 6, title: "New England in Autumn", region: "Northeast USA", stretch: 2, stretchLabel: "Moderate Adventure", description: "Vermont's covered bridges, Maine's rocky coast, and the most spectacular fall colors on earth. Cozy inns and fresh lobster.", logistics: "<strong>Travel:</strong> Flight to Boston, scenic driving. <strong>Pace:</strong> Flexible. <strong>Comfort:</strong> Charming B&Bs.", tags: ["Fall Foliage", "Scenic Drive", "Cozy"] },
+            { id: 7, title: "Rhine River Cruise", region: "Germany & France", stretch: 2, stretchLabel: "Moderate Adventure", description: "Glide past fairy-tale castles, steep vineyards, and storybook villages. Unpack once and let Europe come to you.", logistics: "<strong>Travel:</strong> Flight to Amsterdam/Frankfurt. <strong>Pace:</strong> Very relaxed. <strong>Comfort:</strong> All meals included, English spoken.", tags: ["River Cruise", "Castles", "Wine"] },
+            { id: 8, title: "Ireland", region: "Ireland", stretch: 2, stretchLabel: "Moderate Adventure", description: "Rolling green hills, ancient castles, and the friendliest people you'll meet. Cozy pubs with live music and dramatic cliffs.", logistics: "<strong>Travel:</strong> Direct flights available. <strong>Pace:</strong> Flexible. <strong>Comfort:</strong> Everyone speaks English.", tags: ["Scenic", "History", "Friendly"] },
+            { id: 9, title: "Italy: Rome, Tuscany & Amalfi", region: "Italy", stretch: 3, stretchLabel: "Bucket List", description: "The Colosseum, Michelangelo's David, Tuscan vineyards, and the stunning Amalfi coastline. The trip people dream about.", logistics: "<strong>Travel:</strong> International flight, guided tours available. <strong>Pace:</strong> Moderate. <strong>Comfort:</strong> Quality hotels, guides handle details.", tags: ["History", "Art", "Food", "Dream Trip"] },
+            { id: 10, title: "Japan: Ancient & Modern", region: "Japan", stretch: 3, stretchLabel: "Bucket List", description: "Serene temples in Kyoto, the energy of Tokyo, bullet trains through countryside. Extraordinary beauty and kindness.", logistics: "<strong>Travel:</strong> Long flight but easy once there. <strong>Pace:</strong> Moderate. <strong>Comfort:</strong> Extremely safe and organized.", tags: ["Culture", "Temples", "Unique"] }
+        ];
+
+        const themes = ['theme-rose', 'theme-sage', 'theme-sky', 'theme-gold', 'theme-plum'];
+        const TOTAL_QUESTIONS = 20;
+        const K_FACTOR = 32;
+        const INITIAL_SCORE = 1500;
+
+        let respondentName = '';
+        let scores = {};
+        let matchupQueue = [];
+        let answers = [];
+        let currentIndex = 0;
+
+        function init() {
+            travelOptions.forEach(o => scores[o.id] = INITIAL_SCORE);
+            generateMatchups();
+        }
+
+        function generateMatchups() {
+            let all = [];
+            for (let i = 0; i < travelOptions.length; i++) {
+                for (let j = i + 1; j < travelOptions.length; j++) {
+                    all.push([travelOptions[i].id, travelOptions[j].id]);
+                }
+            }
+            // Shuffle
+            for (let i = all.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [all[i], all[j]] = [all[j], all[i]];
+            }
+            // Prioritize cross-stretch
+            const cross = [], same = [];
+            all.forEach(([a, b]) => {
+                const s1 = travelOptions.find(o => o.id === a).stretch;
+                const s2 = travelOptions.find(o => o.id === b).stretch;
+                (s1 !== s2 ? cross : same).push([a, b]);
+            });
+            matchupQueue = [...cross, ...same].slice(0, TOTAL_QUESTIONS);
+        }
+
+        function recalcScores() {
+            travelOptions.forEach(o => scores[o.id] = INITIAL_SCORE);
+            answers.forEach(a => {
+                if (a.winner) {
+                    const ws = scores[a.winner], ls = scores[a.loser];
+                    const exp = 1 / (1 + Math.pow(10, (ls - ws) / 400));
+                    scores[a.winner] = ws + K_FACTOR * (1 - exp);
+                    scores[a.loser] = ls + K_FACTOR * (0 - (1 - exp));
+                }
+            });
+        }
+
+        function getRankings() {
+            return travelOptions.map(o => ({ ...o, score: scores[o.id] })).sort((a, b) => b.score - a.score);
+        }
+
+        // UI
+        const nameSection = document.getElementById('name-section');
+        const nameInput = document.getElementById('respondent-name');
+        const startBtn = document.getElementById('start-btn');
+        const progressSection = document.getElementById('progress-section');
+        const progressBar = document.getElementById('progress-bar');
+        const currentQEl = document.getElementById('current-q');
+        const totalQEl = document.getElementById('total-q');
+        const matchupSection = document.getElementById('matchup-section');
+        const matchupCards = document.getElementById('matchup-cards');
+        const themeBar = document.getElementById('theme-bar');
+        const optionA = document.getElementById('option-a');
+        const optionB = document.getElementById('option-b');
+        const backBtn = document.getElementById('back-btn');
+        const forwardBtn = document.getElementById('forward-btn');
+        const questionCounter = document.getElementById('question-counter');
+        const resultsSection = document.getElementById('results-section');
+        const sendingIndicator = document.getElementById('sending-indicator');
+        const sendingText = document.getElementById('sending-text');
+
+        nameInput.addEventListener('input', () => startBtn.disabled = !nameInput.value.trim());
+        startBtn.addEventListener('click', startSurvey);
+        optionA.addEventListener('click', () => selectOption('a'));
+        optionB.addEventListener('click', () => selectOption('b'));
+        backBtn.addEventListener('click', goBack);
+        forwardBtn.addEventListener('click', goForward);
+
+        function startSurvey() {
+            respondentName = nameInput.value.trim();
+            init();
+            answers = matchupQueue.map(() => ({ winner: null, loser: null }));
+            currentIndex = 0;
+            nameSection.classList.add('hidden');
+            progressSection.classList.remove('hidden');
+            matchupSection.classList.add('active');
+            totalQEl.textContent = TOTAL_QUESTIONS;
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const [idA, idB] = matchupQueue[currentIndex];
+            const a = travelOptions.find(o => o.id === idA);
+            const b = travelOptions.find(o => o.id === idB);
+
+            // Theme
+            const theme = themes[currentIndex % themes.length];
+            matchupCards.className = 'matchup-cards ' + theme;
+            themeBar.className = 'theme-bar ' + theme;
+
+            // Populate A
+            document.getElementById('region-a').textContent = a.region;
+            document.getElementById('stretch-a').textContent = a.stretchLabel;
+            document.getElementById('stretch-a').className = 'card-stretch stretch-' + a.stretch;
+            document.getElementById('title-a').textContent = a.title;
+            document.getElementById('desc-a').textContent = a.description;
+            document.getElementById('logistics-a').innerHTML = a.logistics;
+            document.getElementById('tags-a').innerHTML = a.tags.map(t => `<span class="card-tag">${t}</span>`).join('');
+
+            // Populate B
+            document.getElementById('region-b').textContent = b.region;
+            document.getElementById('stretch-b').textContent = b.stretchLabel;
+            document.getElementById('stretch-b').className = 'card-stretch stretch-' + b.stretch;
+            document.getElementById('title-b').textContent = b.title;
+            document.getElementById('desc-b').textContent = b.description;
+            document.getElementById('logistics-b').innerHTML = b.logistics;
+            document.getElementById('tags-b').innerHTML = b.tags.map(t => `<span class="card-tag">${t}</span>`).join('');
+
+            // Selection state
+            const ans = answers[currentIndex];
+            optionA.classList.toggle('selected', ans.winner === idA);
+            optionB.classList.toggle('selected', ans.winner === idB);
+
+            updateNav();
+        }
+
+        function updateNav() {
+            backBtn.disabled = currentIndex === 0;
+            // Can go forward if current question is answered
+            forwardBtn.disabled = !answers[currentIndex].winner || currentIndex >= TOTAL_QUESTIONS - 1;
+            questionCounter.textContent = `${currentIndex + 1} / ${TOTAL_QUESTIONS}`;
+            currentQEl.textContent = currentIndex + 1;
+            progressBar.style.width = ((currentIndex + 1) / TOTAL_QUESTIONS * 100) + '%';
+        }
+
+        function selectOption(choice) {
+            const [idA, idB] = matchupQueue[currentIndex];
+            const winner = choice === 'a' ? idA : idB;
+            const loser = choice === 'a' ? idB : idA;
+
+            answers[currentIndex] = { winner, loser };
+            recalcScores();
+
+            // Visual feedback
+            optionA.classList.toggle('selected', choice === 'a');
+            optionB.classList.toggle('selected', choice === 'b');
+
+            // Auto-advance after brief delay
+            setTimeout(() => {
+                if (currentIndex < TOTAL_QUESTIONS - 1) {
+                    currentIndex++;
+                    showQuestion();
+                } else {
+                    showResults();
+                }
+            }, 500);
+        }
+
+        function goBack() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                showQuestion();
+            }
+        }
+
+        function goForward() {
+            if (answers[currentIndex].winner && currentIndex < TOTAL_QUESTIONS - 1) {
+                currentIndex++;
+                showQuestion();
+            }
+        }
+
+        function calculateAppetite(ranked) {
+            const weights = [10, 8, 6, 5, 4, 3, 2, 1.5, 1, 0.5];
+            let ws = 0, tw = 0;
+            ranked.forEach((o, i) => { ws += o.stretch * weights[i]; tw += weights[i]; });
+            const avg = ws / tw;
+            if (avg < 1.5) return { level: "Comfort-Focused", desc: "You're drawn to familiar, relaxing destinations where you can truly unwind." };
+            if (avg < 2.2) return { level: "Balanced Explorer", desc: "You're open to new experiences but appreciate having a comfort zone." };
+            return { level: "Adventure-Ready", desc: "You're ready for something special — the kind of trip you'll talk about for years." };
+        }
+
+        function showResults() {
+            matchupSection.classList.remove('active');
+            progressSection.classList.add('hidden');
+            resultsSection.classList.add('active');
+
+            const ranked = getRankings();
+            const appetite = calculateAppetite(ranked);
+
+            document.getElementById('results-name').textContent = `${respondentName}'s travel preferences`;
+            document.getElementById('results-insight').innerHTML = `<h3>Adventure Appetite: ${appetite.level}</h3><p>${appetite.desc}</p>`;
+            document.getElementById('rankings-list').innerHTML = ranked.map((o, i) => `
+                <div class="ranking-item">
+                    <div class="rank-badge">${i + 1}</div>
+                    <div class="ranking-content">
+                        <div class="ranking-title">${o.title}</div>
+                        <div class="ranking-meta">
+                            <span class="ranking-region">${o.region}</span>
+                            <span class="ranking-stretch stretch-${o.stretch}">${o.stretchLabel}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Auto-send
+            sendResults(ranked, appetite);
+        }
+
+        function sendResults(ranked, appetite) {
+            const results = {
+                respondent: respondentName,
+                timestamp: new Date().toISOString(),
+                adventureAppetite: appetite.level,
+                rankings: ranked.map((o, i) => ({ rank: i + 1, destination: o.title, region: o.region, stretchLevel: o.stretchLabel, score: Math.round(o.score) }))
+            };
+
+            document.getElementById('form-subject').value = `Travel Survey: ${respondentName}'s Results`;
+            document.getElementById('form-respondent').value = respondentName;
+            document.getElementById('form-appetite').value = appetite.level;
+            ranked.forEach((r, i) => {
+                document.getElementById(`form-rank-${i + 1}`).value = `#${i + 1}: ${r.title} (${r.region})`;
+            });
+            document.getElementById('form-full-results').value = JSON.stringify(results, null, 2);
+
+            const form = document.getElementById('hidden-form');
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+            }).then(r => {
+                sendingIndicator.classList.add('sent');
+                sendingText.textContent = 'Results sent! You can close this page.';
+            }).catch(() => {
+                form.submit();
+            });
+        }
+    </script>
+</body>
+</html>
