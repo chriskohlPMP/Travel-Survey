@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Travel Recommendations</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #FAF8F5;
+            --warm-white: #FFFDFB;
+            --charcoal: #2D2D2D;
+            --warm-gray: #5A5A5A;
+            --light-gray: #9A9A9A;
+            --sage: #6B8F71;
+            --sage-light: #8BAF8F;
+            --sage-pale: #E8F0E8;
+            --terracotta: #C4786A;
+            --terracotta-light: #E8A090;
+            --gold: #C9A962;
+            --gold-light: #E8D4A0;
+            --blue: #5A7A8F;
+            --blue-light: #8AACBF;
+            --border: rgba(0,0,0,0.08);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+            --shadow-md: 0 8px 30px rgba(0,0,0,0.08);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 18px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--cream);
+            color: var(--charcoal);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(250, 248, 245, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: var(--charcoal);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-link {
+            padding: 10px 18px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--warm-gray);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            background: var(--sage-pale);
+            color: var(--sage);
+        }
+
+        .nav-link.active {
+            background: var(--sage);
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 120px 40px 80px;
+            background: linear-gradient(180deg, var(--cream) 0%, var(--warm-white) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(107, 143, 113, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(201, 169, 98, 0.06) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: var(--sage-pale);
+            color: var(--sage);
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border-radius: 100px;
+            margin-bottom: 32px;
+        }
+
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4rem;
+            font-weight: 500;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            color: var(--charcoal);
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--warm-gray);
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto 48px;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 36px;
+            background: var(--sage);
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s;
+            box-shadow: var(--shadow-md);
+        }
+
+        .hero-cta:hover {
+            background: var(--sage-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .hero-cta svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--light-gray);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        /* Section Styles */
+        section {
+            padding: 100px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.9rem;
+            color: var(--sage);
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem;
+            font-weight: 500;
+            color: var(--charcoal);
+            margin-bottom: 16px;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--warm-gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Journey Section */
+        .journey-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .journey-card {
+            background: var(--warm-white);
+            border-radius: 20px;
+            padding: 36px;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .journey-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-4px);
+        }
+
+        .journey-card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--charcoal);
+        }
+
+        .journey-card p {
+            color: var(--warm-gray);
+            font-size: 1rem;
+        }
+
+        .journey-card.highlight {
+            grid-column: span 2;
+            background: linear-gradient(135deg, var(--sage) 0%, var(--sage-light) 100%);
+            color: white;
+        }
+
+        .journey-card.highlight h3 {
+            color: white;
+        }
+
+        .journey-card.highlight p {
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Destination Cards */
+        .destinations {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .destination-card {
+            background: var(--warm-white);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: all 0.4s;
+            cursor: pointer;
+        }
+
+        .destination-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+        }
+
+        .destination-card.expanded {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .destination-header {
+            display: grid;
+            grid-template-columns: 1fr 2fr auto;
+            align-items: center;
+            gap: 32px;
+            padding: 32px;
+        }
+
+        .destination-rank {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .destination-rank.gold {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+        }
+
+        .destination-rank.silver {
+            background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 100%);
+        }
+
+        .destination-rank.bronze {
+            background: linear-gradient(135deg, var(--terracotta) 0%, var(--terracotta-light) 100%);
+        }
+
+        .destination-rank span {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+
+        .destination-rank strong {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            line-height: 1;
+        }
+
+        .destination-info h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--charcoal);
+        }
+
+        .destination-region {
+            font-size: 0.9rem;
+            color: var(--warm-gray);
+            margin-bottom: 12px;
+        }
+
+        .destination-scores {
+            display: flex;
+            gap: 16px;
+            font-size: 0.85rem;
+        }
+
+        .score-badge {
+            padding: 6px 14px;
+            background: var(--sage-pale);
+            color: var(--sage);
+            border-radius: 100px;
+            font-weight: 500;
+        }
+
+        .expand-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .expand-btn:hover {
+            background: var(--sage-pale);
+            border-color: var(--sage);
+        }
+
+        .expand-btn svg {
+            width: 24px;
+            height: 24px;
+            color: var(--warm-gray);
+            transition: transform 0.3s;
+        }
+
+        .destination-card.expanded .expand-btn svg {
+            transform: rotate(180deg);
+        }
+
+        .destination-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .destination-card.expanded .destination-details {
+            max-height: 1500px;
+        }
+
+        .destination-details-inner {
+            padding: 0 32px 40px;
+        }
+
+        .destination-description {
+            font-size: 1.1rem;
+            color: var(--warm-gray);
+            line-height: 1.8;
+            margin-bottom: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .destination-features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .feature-card {
+            background: var(--cream);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: var(--sage-pale);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .feature-icon svg {
+            width: 24px;
+            height: 24px;
+            color: var(--sage);
+        }
+
+        .feature-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--charcoal);
+        }
+
+        .feature-card p {
+            font-size: 0.9rem;
+            color: var(--warm-gray);
+        }
+
+        .why-perfect {
+            background: linear-gradient(135deg, var(--sage-pale) 0%, rgba(107, 143, 113, 0.1) 100%);
+            border-radius: 16px;
+            padding: 28px 32px;
+        }
+
+        .why-perfect h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--sage);
+            margin-bottom: 12px;
+        }
+
+        .why-perfect p {
+            color: var(--charcoal);
+            font-size: 1rem;
+        }
+
+        .destination-note {
+            margin-top: 20px;
+            padding: 20px 24px;
+            background: rgba(201, 169, 98, 0.1);
+            border-left: 4px solid var(--gold);
+            border-radius: 0 12px 12px 0;
+        }
+
+        .destination-note p {
+            color: var(--warm-gray);
+            font-size: 0.95rem;
+            font-style: italic;
+        }
+
+        /* Operators Section */
+        .operators-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .operator-card {
+            background: var(--warm-white);
+            border-radius: 20px;
+            padding: 32px;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .operator-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .operator-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .operator-logo {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .operator-card:nth-child(1) .operator-logo { background: linear-gradient(135deg, #C41E3A, #E8475D); }
+        .operator-card:nth-child(2) .operator-logo { background: linear-gradient(135deg, #1B4D89, #3A7BC8); }
+        .operator-card:nth-child(3) .operator-logo { background: linear-gradient(135deg, #2E5A4C, #4A8F71); }
+        .operator-card:nth-child(4) .operator-logo { background: linear-gradient(135deg, #8B5A2B, #C4956A); }
+
+        .operator-card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--charcoal);
+        }
+
+        .operator-card p {
+            color: var(--warm-gray);
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+        }
+
+        .operator-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--sage);
+            font-weight: 500;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .operator-link:hover {
+            text-decoration: underline;
+        }
+
+        .operator-link svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Timeline Section */
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--sage) 0%, var(--gold) 100%);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 48px;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -34px;
+            top: 4px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--sage);
+            border: 4px solid var(--cream);
+        }
+
+        .timeline-item:nth-child(2) .timeline-dot { background: var(--blue); }
+        .timeline-item:nth-child(3) .timeline-dot { background: var(--gold); }
+
+        .timeline-content {
+            background: var(--warm-white);
+            border-radius: 16px;
+            padding: 28px;
+            border: 1px solid var(--border);
+        }
+
+        .timeline-content h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--charcoal);
+        }
+
+        .timeline-content p {
+            color: var(--warm-gray);
+            font-size: 1rem;
+        }
+
+        /* Preparation Section */
+        .prep-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .prep-card {
+            background: var(--warm-white);
+            border-radius: 20px;
+            padding: 36px;
+            border: 1px solid var(--border);
+        }
+
+        .prep-card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: var(--charcoal);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .prep-card h3 svg {
+            width: 28px;
+            height: 28px;
+            color: var(--sage);
+        }
+
+        .prep-list {
+            list-style: none;
+        }
+
+        .prep-list li {
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .prep-list li:last-child {
+            border-bottom: none;
+        }
+
+        .prep-list .check {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--sage-pale);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .prep-list .check svg {
+            width: 14px;
+            height: 14px;
+            color: var(--sage);
+        }
+
+        .prep-list strong {
+            display: block;
+            color: var(--charcoal);
+            margin-bottom: 4px;
+        }
+
+        .prep-list span {
+            color: var(--warm-gray);
+            font-size: 0.95rem;
+        }
+
+        /* Next Steps */
+        .next-steps {
+            background: linear-gradient(135deg, var(--sage) 0%, var(--sage-light) 100%);
+            border-radius: 32px;
+            padding: 60px;
+            text-align: center;
+            color: white;
+        }
+
+        .next-steps h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.4rem;
+            font-weight: 500;
+            margin-bottom: 32px;
+        }
+
+        .steps-list {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .step-item {
+            background: rgba(255,255,255,0.15);
+            border-radius: 16px;
+            padding: 24px 28px;
+            text-align: left;
+            max-width: 220px;
+        }
+
+        .step-number {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: white;
+            color: var(--sage);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .step-item p {
+            font-size: 0.95rem;
+            opacity: 0.95;
+        }
+
+        .final-message {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            font-style: italic;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 60px 40px;
+            color: var(--light-gray);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            html { font-size: 16px; }
+            
+            .nav-links { display: none; }
+            
+            .hero h1 { font-size: 2.8rem; }
+            
+            .journey-cards,
+            .operators-grid,
+            .prep-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .journey-card.highlight {
+                grid-column: span 1;
+            }
+            
+            .destination-header {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .destination-rank {
+                margin: 0 auto;
+            }
+            
+            .destination-scores {
+                justify-content: center;
+            }
+            
+            .expand-btn {
+                margin: 0 auto;
+            }
+            
+            .destination-features {
+                grid-template-columns: 1fr;
+            }
+            
+            .steps-list {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .step-item {
+                max-width: 100%;
+            }
+            
+            section {
+                padding: 60px 24px;
+            }
+            
+            .next-steps {
+                padding: 40px 24px;
+                border-radius: 24px;
+            }
+        }
+
+        /* Moose watermark */
+        .moose-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90vw;
+            height: 90vh;
+            max-width: 1200px;
+            max-height: 1000px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.04;
+        }
+
+        .moose-watermark svg {
+            width: 100%;
+            height: 100%;
+            fill: var(--sage);
+        }
+
+        /* Ensure content stays above watermark */
+        .nav { z-index: 1000; }
+        .hero, section, footer { position: relative; z-index: 1; }
+
+        /* Print styles */
+        @media print {
+            .nav, .scroll-indicator, .expand-btn, .moose-watermark { display: none; }
+            .destination-details { max-height: none !important; }
+            section { padding: 40px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Moose watermark for Mom -->
+    <div class="moose-watermark">
+        <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+            <!-- Majestic moose silhouette -->
+            <path d="
+                M650 280
+                C655 250 680 220 720 200
+                C740 190 770 195 780 210
+                C790 225 785 245 770 255
+                C755 265 735 260 720 250
+                C705 240 695 245 690 260
+                L685 280
+                
+                M150 280
+                C145 250 120 220 80 200
+                C60 190 30 195 20 210
+                C10 225 15 245 30 255
+                C45 265 65 260 80 250
+                C95 240 105 245 110 260
+                L115 280
+                
+                M115 280
+                C100 285 85 300 80 320
+                C75 340 85 360 100 370
+                L120 375
+                C110 380 105 395 110 410
+                C115 425 130 435 150 435
+                L170 430
+                
+                M685 280
+                C700 285 715 300 720 320
+                C725 340 715 360 700 370
+                L680 375
+                C690 380 695 395 690 410
+                C685 425 670 435 650 435
+                L630 430
+                
+                M170 430
+                L180 420
+                C190 400 220 380 260 370
+                L300 365
+                
+                M630 430
+                L620 420
+                C610 400 580 380 540 370
+                L500 365
+                
+                M300 365
+                C320 360 350 355 400 355
+                C450 355 480 360 500 365
+                
+                M260 370
+                C240 390 230 420 235 455
+                C240 490 260 520 290 540
+                L310 550
+                C300 555 295 565 300 580
+                L320 590
+                L340 585
+                L345 560
+                L330 545
+                C350 530 365 500 365 465
+                L365 440
+                
+                M540 370
+                C560 390 570 420 565 455
+                C560 490 540 520 510 540
+                L490 550
+                C500 555 505 565 500 580
+                L480 590
+                L460 585
+                L455 560
+                L470 545
+                C450 530 435 500 435 465
+                L435 440
+                
+                M365 440
+                C380 430 400 425 400 425
+                C400 425 420 430 435 440
+                
+                M365 465
+                L365 520
+                C365 540 355 560 340 575
+                L325 585
+                
+                M435 465
+                L435 520
+                C435 540 445 560 460 575
+                L475 585
+                
+                M300 365
+                L280 340
+                C260 310 250 280 260 250
+                C270 220 300 200 340 195
+                L380 192
+                
+                M500 365
+                L520 340
+                C540 310 550 280 540 250
+                C530 220 500 200 460 195
+                L420 192
+                
+                M380 192
+                C390 185 400 180 400 180
+                C400 180 410 185 420 192
+                
+                M340 195
+                C330 180 335 160 355 150
+                C375 140 395 150 400 165
+                C405 150 425 140 445 150
+                C465 160 470 180 460 195
+                
+                M355 150
+                L350 130
+                C345 110 355 95 375 90
+                L390 88
+                
+                M445 150
+                L450 130
+                C455 110 445 95 425 90
+                L410 88
+                
+                M390 88
+                C395 80 400 75 400 75
+                C400 75 405 80 410 88
+                
+                M375 90
+                C365 85 360 75 365 65
+                C370 55 385 50 400 50
+                C415 50 430 55 435 65
+                C440 75 435 85 425 90
+                
+                M400 75
+                L400 50
+                
+                M380 60
+                C375 55 378 48 385 48
+                C392 48 396 55 392 60
+                
+                M420 60
+                C425 55 422 48 415 48
+                C408 48 404 55 408 60
+            "/>
+        </svg>
+    </div>
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="nav-title">Your Travel Guide</div>
+            <div class="nav-links">
+                <a href="#journey" class="nav-link">Our Process</a>
+                <a href="#destinations" class="nav-link">Destinations</a>
+                <a href="#operators" class="nav-link">Tour Operators</a>
+                <a href="#timing" class="nav-link">When to Go</a>
+                <a href="#preparation" class="nav-link">Preparation</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">Sue & Richard</div>
+            <h1>Your Dream Trip Awaits</h1>
+            <p class="hero-subtitle">Based on your preferences, we've identified the perfect destinations. Here's everything you need to make it happen.</p>
+            <a href="#destinations" class="hero-cta">
+                View Your Recommendations
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll to explore</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
+        </div>
+    </header>
+
+    <section id="journey">
+        <div class="section-header">
+            <div class="section-number">01</div>
+            <h2 class="section-title">How We Found Your Perfect Trip</h2>
+            <p class="section-subtitle">Two rounds of questions revealed what you both really want</p>
+        </div>
+
+        <div class="journey-cards">
+            <div class="journey-card">
+                <h3>Round 1: Discovery</h3>
+                <p>We started with 10 diverse destinations — from familiar domestic trips to bucket-list adventures. You each ranked them independently.</p>
+            </div>
+            <div class="journey-card">
+                <h3>What We Learned</h3>
+                <p>You're both "Balanced Explorers" — you want more adventure than staying close to home, but prefer manageable logistics and someone else handling the details.</p>
+            </div>
+            <div class="journey-card highlight">
+                <h3>The Key Insight</h3>
+                <p>You both gravitated toward the same thing: scenic beauty with easy logistics. River cruises, train journeys, and guided tours where you can relax and enjoy the view. The destinations you ranked lowest? The "too easy" domestic trips AND the "too ambitious" international ones like Japan.</p>
+            </div>
+            <div class="journey-card">
+                <h3>Round 2: Refinement</h3>
+                <p>We kept your top 5 and replaced the bottom 5 with new options matching your preferences. The result? Strong alignment.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="destinations">
+        <div class="section-header">
+            <div class="section-number">02</div>
+            <h2 class="section-title">Your Top Destinations</h2>
+            <p class="section-subtitle">Click each card to explore the details</p>
+        </div>
+
+        <div class="destinations">
+            <!-- Destination 1: Rhine -->
+            <div class="destination-card" onclick="toggleCard(this)">
+                <div class="destination-header">
+                    <div class="destination-rank gold">
+                        <span>Option</span>
+                        <strong>A</strong>
+                    </div>
+                    <div class="destination-info">
+                        <h3>Rhine River Cruise</h3>
+                        <div class="destination-region">Germany, France, Netherlands & Switzerland</div>
+                        <div class="destination-scores">
+                            <span class="score-badge">Sue: #2</span>
+                            <span class="score-badge">Richard: #1</span>
+                            <span class="score-badge" style="background: var(--gold-light); color: #8B6914;">Combined: #1</span>
+                        </div>
+                    </div>
+                    <button class="expand-btn" aria-label="Expand details">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="destination-details">
+                    <div class="destination-details-inner">
+                        <p class="destination-description">
+                            Glide past fairy-tale castles, steep vineyards, and storybook villages. Your floating hotel handles everything — meals, transportation, and all the details. The UNESCO-listed Rhine Gorge is spectacular, and you'll stop in charming towns like Rüdesheim, Strasbourg, and Cologne. Watch medieval towers drift past your window at breakfast, then stroll through a 500-year-old wine village before lunch.
+                        </p>
+                        <div class="destination-features">
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                                        <circle cx="12" cy="10" r="3"/>
+                                    </svg>
+                                </div>
+                                <h4>Unpack Once</h4>
+                                <p>Your cabin is your home base for the entire journey. No packing and unpacking between cities.</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3M10 1v3M14 1v3"/>
+                                    </svg>
+                                </div>
+                                <h4>All Meals Included</h4>
+                                <p>Breakfast, lunch, and dinner on board. Plus wine with dinner and local tastings ashore.</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
+                                    </svg>
+                                </div>
+                                <h4>English Everywhere</h4>
+                                <p>Ship staff and most locals speak English. No language barriers to worry about.</p>
+                            </div>
+                        </div>
+                        <div class="why-perfect">
+                            <h4>Why It's Perfect for You</h4>
+                            <p>This is the easiest way to see Europe. The ship handles every detail — you just show up, relax, and watch castles float by. Excursions are optional, and there's always a "gentle pace" option for those who prefer less walking.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Destination 2: Scotland -->
+            <div class="destination-card" onclick="toggleCard(this)">
+                <div class="destination-header">
+                    <div class="destination-rank silver">
+                        <span>Option</span>
+                        <strong>B</strong>
+                    </div>
+                    <div class="destination-info">
+                        <h3>Scottish Highlands</h3>
+                        <div class="destination-region">Scotland</div>
+                        <div class="destination-scores">
+                            <span class="score-badge">Sue: #4</span>
+                            <span class="score-badge">Richard: #5</span>
+                            <span class="score-badge" style="background: var(--blue-light); color: #2A4A5F;">Combined: #4</span>
+                        </div>
+                    </div>
+                    <button class="expand-btn" aria-label="Expand details">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="destination-details">
+                    <div class="destination-details-inner">
+                        <p class="destination-description">
+                            Mist-covered mountains, ancient castles, and whisky distilleries. Dramatic landscapes that feel like stepping into another world — with everyone speaking English. From Edinburgh's cobblestone streets to the shores of Loch Ness, the Highlands offer a magical mix of history, nature, and warm Scottish hospitality. Cozy up in a centuries-old inn after a day exploring castles.
+                        </p>
+                        <div class="destination-features">
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16"/>
+                                    </svg>
+                                </div>
+                                <h4>Historic Castles</h4>
+                                <p>Edinburgh Castle, Stirling Castle, Cawdor Castle — centuries of history brought to life.</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M8 21h8M12 17V3M12 3l4 4M12 3L8 7"/>
+                                    </svg>
+                                </div>
+                                <h4>Whisky Tastings</h4>
+                                <p>Visit Scotland's oldest distilleries and sample single malts where they're made.</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+                                    </svg>
+                                </div>
+                                <h4>Friendly Locals</h4>
+                                <p>The Scots are famously welcoming. No language barrier, just warm conversation.</p>
+                            </div>
+                        </div>
+                        <div class="why-perfect">
+                            <h4>Why It's Perfect for You</h4>
+                            <p>All the magic of international travel with none of the language barriers. Guided tours handle the driving and logistics, and the pace can be as relaxed as you want. Plus, the scenery is absolutely stunning.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Destination 3: Canadian Rockies -->
+            <div class="destination-card" onclick="toggleCard(this)">
+                <div class="destination-header">
+                    <div class="destination-rank bronze">
+                        <span>Option</span>
+                        <strong>C</strong>
+                    </div>
+                    <div class="destination-info">
+                        <h3>Canadian Rockies by Train</h3>
+                        <div class="destination-region">Alberta & British Columbia, Canada</div>
+                        <div class="destination-scores">
+                            <span class="score-badge">Sue: #1</span>
+                            <span class="score-badge">Richard: #3</span>
+                            <span class="score-badge" style="background: var(--terracotta-light); color: #8B4A3A;">Combined: #2</span>
+                        </div>
+                    </div>
+                    <button class="expand-btn" aria-label="Expand details">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="destination-details">
+                    <div class="destination-details-inner">
+                        <p class="destination-description">
+                            The Rocky Mountaineer's glass-dome cars reveal Banff, Lake Louise, and Jasper — turquoise lakes, towering peaks, and wildlife around every bend. You sit back in luxury while some of North America's most spectacular scenery unfolds outside your window. Gourmet meals served at your seat, with commentary on the passing landmarks.
+                        </p>
+                        <div class="destination-features">
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="2" y="6" width="20" height="12" rx="2"/>
+                                        <path d="M6 18v2M18 18v2M2 10h20"/>
+                                    </svg>
+                                </div>
+                                <h4>Luxury Train</h4>
+                                <p>Glass-dome cars with panoramic views. Reclining seats, gourmet meals, and white-glove service.</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
+                                        <path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/>
+                                    </svg>
+                                </div>
+                                <h4>Dramatic Scenery</h4>
+                                <p>Turquoise lakes, towering peaks, glaciers, and wildlife — all from your seat.</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                                        <polyline points="22 4 12 14.01 9 11.01"/>
+                                    </svg>
+                                </div>
+                                <h4>No Passport Hassle</h4>
+                                <p>Closer to home with familiar currency and no international logistics to manage.</p>
+                            </div>
+                        </div>
+                        <div class="why-perfect">
+                            <h4>Why It's Perfect for You</h4>
+                            <p>The train does all the work. You just sit back, enjoy gourmet meals, and watch the Rockies unfold. Luxury service with spectacular scenery and no driving required.</p>
+                        </div>
+                        <div class="destination-note">
+                            <p><strong>A note:</strong> You've been to the Canadian Rockies before, so this might feel less "new" than the European options. But if you want spectacular scenery without the longer flight, it's a great choice.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="operators">
+        <div class="section-header">
+            <div class="section-number">03</div>
+            <h2 class="section-title">Recommended Tour Operators</h2>
+            <p class="section-subtitle">Companies that specialize in trips for active seniors</p>
+        </div>
+
+        <div class="operators-grid">
+            <div class="operator-card">
+                <div class="operator-header">
+                    <div class="operator-logo">V</div>
+                    <h3>Viking River Cruises</h3>
+                </div>
+                <p>The most recognized name in river cruising. Cultural immersion focus, comfortable ships, and excursions graded by activity level. Great for first-time cruisers.</p>
+                <a href="https://www.vikingrivercruises.com" target="_blank" class="operator-link">
+                    Visit Website
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/>
+                    </svg>
+                </a>
+            </div>
+            <div class="operator-card">
+                <div class="operator-header">
+                    <div class="operator-logo">T</div>
+                    <h3>Tauck</h3>
+                </div>
+                <p>Premium all-inclusive experience. Smaller groups, exclusive experiences, all gratuities included. Higher price point but fewer surprises — everything is handled for you.</p>
+                <a href="https://www.tauck.com" target="_blank" class="operator-link">
+                    Visit Website
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/>
+                    </svg>
+                </a>
+            </div>
+            <div class="operator-card">
+                <div class="operator-header">
+                    <div class="operator-logo">A</div>
+                    <h3>Avalon Waterways</h3>
+                </div>
+                <p>Known for spacious cabins with panoramic windows. Good balance of value and quality. Offers both "Active Discovery" and "Classic" pace options.</p>
+                <a href="https://www.avalonwaterways.com" target="_blank" class="operator-link">
+                    Visit Website
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/>
+                    </svg>
+                </a>
+            </div>
+            <div class="operator-card">
+                <div class="operator-header">
+                    <div class="operator-logo">RS</div>
+                    <h3>Road Scholar</h3>
+                </div>
+                <p>Educational focus with expert-led lectures. Designed specifically for seniors with programs rated by activity level. Non-profit organization with excellent value.</p>
+                <a href="https://www.roadscholar.org" target="_blank" class="operator-link">
+                    Visit Website
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="timing">
+        <div class="section-header">
+            <div class="section-number">04</div>
+            <h2 class="section-title">When to Go</h2>
+            <p class="section-subtitle">The best times for comfortable travel and beautiful scenery</p>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h3>Rhine River Cruise: Late September – Mid October</h3>
+                    <p>Fall colors turn the Rhine Valley golden and red. Temperatures are mild (60-70°F), summer crowds have thinned, and you avoid peak-season pricing. Early September also works well.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h3>Scottish Highlands: September</h3>
+                    <p>The sweet spot. Summer crowds have departed, weather is still pleasant (55-65°F), and the heather blooms purple across the hillsides. Early October works but gets cooler and rainier.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h3>Canadian Rockies: Early – Mid September</h3>
+                    <p>Summer crowds thin, fall colors begin, and wildlife is active before winter. The Rocky Mountaineer runs through mid-October. Temperatures are comfortable for exploring.</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: var(--warm-white); border-radius: 20px; padding: 32px; margin-top: 48px; border: 1px solid var(--border);">
+            <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; margin-bottom: 16px; color: var(--charcoal);">Booking Timeline</h3>
+            <p style="color: var(--warm-gray); margin-bottom: 12px;"><strong style="color: var(--charcoal);">For Fall 2026:</strong> Book by March–April 2026. Popular cruise dates and cabin categories sell out 6+ months ahead.</p>
+            <p style="color: var(--warm-gray);"><strong style="color: var(--charcoal);">For Fall 2027:</strong> Bookings typically open 18 months ahead (Spring 2026). Early booking often gets the best cabin selection and may include promotions.</p>
+        </div>
+    </section>
+
+    <section id="preparation">
+        <div class="section-header">
+            <div class="section-number">05</div>
+            <h2 class="section-title">Getting Ready</h2>
+            <p class="section-subtitle">What to expect and how to prepare</p>
+        </div>
+
+        <div class="prep-grid">
+            <div class="prep-card">
+                <h3>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                        <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                    What You'll Need to Do
+                </h3>
+                <ul class="prep-list">
+                    <li>
+                        <div class="check">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <strong>Walking</strong>
+                            <span>1-2 miles at a leisurely pace with rest stops. Some cobblestones and gentle inclines. "Easy pace" excursions always available.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="check">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <strong>Stairs</strong>
+                            <span>Climb 12-15 steps with handrail (rest at top is fine). River cruise ships have elevators between main decks.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="check">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <strong>Standing</strong>
+                            <span>20-30 minutes during guided tours. Benches and rest opportunities usually available.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="check">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <strong>Balance</strong>
+                            <span>Basic balance on a gently moving ship. River cruises have minimal motion — much less than ocean cruises.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="prep-card">
+                <h3>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 20V10M12 20V4M6 20v-6"/>
+                    </svg>
+                    Building Up (3-6 Months Before)
+                </h3>
+                <ul class="prep-list">
+                    <li>
+                        <div class="check">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <strong>Daily Walks</strong>
+                            <span>Start with 15-20 minutes, build to 30-45. Comfortable pace where you can hold a conversation.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="check">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <strong>Stair Practice</strong>
+                            <span>If you have stairs at home, practice going up and down once or twice daily. Use the handrail.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="check">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <strong>Standing Practice</strong>
+                            <span>Practice standing for longer periods — while cooking, at a counter, or during a museum visit.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="check">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <strong>Doctor Check-in</strong>
+                            <span>Consult your doctors before booking. They can advise on precautions and travel medications.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="background: linear-gradient(135deg, var(--sage-pale) 0%, rgba(107, 143, 113, 0.1) 100%); border-radius: 20px; padding: 32px; margin-top: 32px;">
+            <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; margin-bottom: 16px; color: var(--sage);">On the Trip: Take It at Your Pace</h3>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; color: var(--charcoal);">
+                <p><strong>Skip what you want.</strong> The ship is a comfortable home base — some days, watching castles glide by from the deck is perfect.</p>
+                <p><strong>Choose "easy" options.</strong> Most cruise lines offer tiered excursions. Select "gentle pace" or bus-based tours when available.</p>
+                <p><strong>Build in rest.</strong> A morning excursion followed by an afternoon on the ship is a good rhythm.</p>
+                <p><strong>Comfortable shoes.</strong> Bring well-broken-in walking shoes with good support. Cobblestones are unforgiving.</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="next-steps">
+            <h2>Ready to Make It Happen?</h2>
+            <div class="steps-list">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <p>Pick which trip excites you both most</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <p>Check with your doctors about travel readiness</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <p>Browse tour operator websites for dates</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <p>Start that daily walking routine</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">5</div>
+                    <p>Book 6+ months ahead for best selection</p>
+                </div>
+            </div>
+            <p class="final-message">You both deserve an amazing adventure. Let's make it happen.</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>Made with care by your family ✦ 2026</p>
+    </footer>
+
+    <script>
+        // Smooth card expansion
+        function toggleCard(card) {
+            const wasExpanded = card.classList.contains('expanded');
+            
+            // Close all cards first
+            document.querySelectorAll('.destination-card').forEach(c => {
+                c.classList.remove('expanded');
+            });
+            
+            // Toggle this card
+            if (!wasExpanded) {
+                card.classList.add('expanded');
+                
+                // Scroll into view with offset for nav
+                setTimeout(() => {
+                    const rect = card.getBoundingClientRect();
+                    const offset = 100;
+                    if (rect.top < offset) {
+                        window.scrollBy({ top: rect.top - offset, behavior: 'smooth' });
+                    }
+                }, 100);
+            }
+        }
+
+        // Active nav link highlighting
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        function updateActiveNav() {
+            const scrollPos = window.scrollY + 150;
+            
+            sections.forEach(section => {
+                const top = section.offsetTop;
+                const height = section.offsetHeight;
+                const id = section.getAttribute('id');
+                
+                if (scrollPos >= top && scrollPos < top + height) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${id}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveNav);
+        updateActiveNav();
+
+        // Smooth scroll for nav links
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.querySelector(link.getAttribute('href'));
+                if (target) {
+                    const offset = 80;
+                    const targetPosition = target.offsetTop - offset;
+                    window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Auto-expand first destination card on page load for guidance
+        setTimeout(() => {
+            const firstCard = document.querySelector('.destination-card');
+            if (firstCard && window.innerWidth > 900) {
+                // Don't auto-expand on mobile
+                // firstCard.classList.add('expanded');
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
